@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 extension WeatherViewController {
     func presentSearchAlert(title: String?, message: String?, style: UIAlertController.Style, completionHandler: @escaping (String) -> Void) {
