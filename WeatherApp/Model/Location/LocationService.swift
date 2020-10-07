@@ -8,10 +8,10 @@
 import Foundation
 import CoreLocation
 
-final class LocationService: NSObject, CLLocationManagerDelegate {
+class LocationService: NSObject, CLLocationManagerDelegate {
     let locationManager = CLLocationManager()
-    var currLongitude = 0.0
-    var currLatitude = 0.0
+    var currLongitude: Double?
+    var currLatitude: Double?
     
     
 

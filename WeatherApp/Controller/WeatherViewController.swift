@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class WeatherViewController: UIViewController {
     @IBOutlet weak var weatherIconImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -23,6 +24,8 @@ class WeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setInterfaceMode()
+        self.locationService.locationManager.requestLocation()
         self.getDataByLocation()
     }
 }
@@ -30,8 +33,8 @@ class WeatherViewController: UIViewController {
 extension WeatherViewController {
     
     func getDataByLocation() {
-        locationService.locationManager.requestLocation()
-        let urlString = weatherApiBaseURL + "?lat=\(locationService.currLatitude)&lon=\(locationService.currLongitude)&appid=\(apiKey)&units=metric"
+        guard let longitude = locationService.currLongitude, let latitude = locationService.currLatitude else { return }
+        let urlString = weatherApiBaseURL + "?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric"
         guard let url = URL(string: urlString) else { return }
         self.weatherApiService.fetchData(forURL: url)
         self.weatherApiService.onComplition = { currWeather in
@@ -58,5 +61,14 @@ extension WeatherViewController {
             self.weatherIconImageView.image = UIImage(systemName: currWeather.weatherIconStr)
         }
     }
+    
+    func setInterfaceMode() {
+        let date = Date()
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date)
+        print(hour)
+        if hour > 21 {
+            self.overrideUserInterfaceStyle = .dark
+        }
+    }
 }
-
